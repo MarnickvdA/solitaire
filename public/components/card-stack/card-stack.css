@@ -1,0 +1,11 @@
+x-card-stack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--card-border-radius);
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: visible;
+}

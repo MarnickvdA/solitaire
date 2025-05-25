@@ -1,0 +1,12 @@
+x-app {
+  display: grid;
+  margin: auto;
+  padding: 32px;
+  grid-template-columns: repeat(7, 10rem);
+  grid-template-rows: repeat(2, 15rem);
+  grid-template-areas:
+    "SD SP .  AH AC AD AS"
+    "S1 S2 S3 S4 S5 S6 S7";
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+}

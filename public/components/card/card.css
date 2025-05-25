@@ -1,0 +1,20 @@
+x-card {
+  display: block;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  background-color: var(--card-background-color);
+  border-radius: var(--card-border-radius);
+  border: 3px solid gray;
+
+  position: absolute;
+  top: calc(4px + min(calc(var(--i) * 6px), calc(3 * 6px)));
+  left: 4px;
+  z-index: var(--i);
+}
+
+x-card[open=false] {
+  background: var(--card-back-pattern);
+  background-color: var(--card-background-color);
+  background-size: cover;
+  background-repeat: repeat;
+}
