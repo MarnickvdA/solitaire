@@ -20,6 +20,22 @@ export const ranks = [
 ];
 
 /**
+ * @param {string} suit
+ */
+export function getUnicodeForSuit(suit) {
+  switch (suit.toLowerCase()) {
+    case "hearts":
+      return "&#9829;";
+    case "clubs":
+      return "&#9827;";
+    case "diamonds":
+      return "&#9830;";
+    case "spades":
+      return "&#9824;";
+  }
+}
+
+/**
  * @returns {Card[]} shuffled deck
  */
 export function generateShuffledDeck() {

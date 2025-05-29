@@ -2,13 +2,15 @@ x-app {
   display: grid;
   margin: auto;
   padding: 32px;
-  grid-template-columns: repeat(7, 14rem);
-  grid-template-rows: repeat(2, 20rem);
+  grid-template-columns: repeat(7, max(120px, 10dvw));
+  grid-template-rows: repeat(2, max(180px, 15dvw));
   grid-template-areas:
     "SD SP .  AH AC AD AS"
     "S1 S2 S3 S4 S5 S6 S7";
-  grid-column-gap: 24px;
-  grid-row-gap: 128px;
+  grid-column-gap: max(24px, 2dvw);
+  grid-row-gap: max(128px, 10dvw);
+
+  font-size: max(16px, 1.25dvw);
 }
 
 .ace-deck {
@@ -19,13 +21,12 @@ x-app {
   justify-content: center;
   align-items: center;
 
-
   span.suit-bg {
     z-index: -1;
     position: absolute;
     color: rgba(255, 255, 255, 0.2);
     font-weight: bold;
-    font-size: 8rem;
-    line-height: 5.5rem;
+    font-size: max(8rem, 10dvw);
+    line-height: max(6rem, 3dvw);
   }
 }

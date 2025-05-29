@@ -1,3 +1,5 @@
+import { getUnicodeForSuit } from "../../lib/deck-utils.js";
+
 class Card extends HTMLElement {
   static observedAttributes = ["open", "suit", "rank"];
 
@@ -22,8 +24,24 @@ class Card extends HTMLElement {
       this.classList.remove("hide");
     });
 
+    const shortRank =
+      this.getAttribute("rank") === "10"
+        ? this.getAttribute("rank")
+        : this.getAttribute("rank").charAt(0);
+    const suitUnicode = getUnicodeForSuit(this.getAttribute("suit"));
+
     this.innerHTML = `
-        <p class="card-content">${this.getAttribute("rank")} of ${this.getAttribute("suit")}</p>
+        <div class="card-content">
+          <div class="card-info card-header">
+            <span class="card-rank">${shortRank}</span>
+            <span class="card-suit">${suitUnicode}</span>
+          </div>
+          <div class="card-body"></div>
+          <div class="card-info card-footer">
+            <span class="card-rank">${shortRank}</span>
+            <span class="card-suit">${suitUnicode}</span>
+          </div>
+        </div>
       `;
   }
 }

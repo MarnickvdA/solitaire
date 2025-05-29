@@ -60,10 +60,6 @@ class App extends HTMLElement {
       return false;
     }
 
-    if(target.id === sourceId) {
-      return true
-    }
-
     if (target.id === "pile") {
       if (sourceId !== "deck") {
         console.warn("can only drop in pile from deck");

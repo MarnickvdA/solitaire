@@ -12,10 +12,41 @@ x-card {
     display: flex;
     width: 100%;
     height: 100%;
-    padding: 8px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+    position: relative;
+
+    .card-suit {
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+    }
+
+    .card-rank {
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+    }
+
+    .card-info {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .card-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .card-body {
+      position: absolute;
+    }
+
+    .card-footer {
+      transform: rotate(180deg);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
   }
 
   &[suit="Hearts"],
