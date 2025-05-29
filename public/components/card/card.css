@@ -4,17 +4,43 @@ x-card {
   height: calc(100% - 8px);
   background-color: var(--card-background-color);
   border-radius: var(--card-border-radius);
-  border: 3px solid gray;
-
-  position: absolute;
-  top: calc(4px + min(calc(var(--i) * 6px), calc(3 * 6px)));
-  left: 4px;
+  border: 2px solid var(--border-color);
   z-index: var(--i);
+  position: absolute;
+
+  .card-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &[suit="Hearts"],
+  &[suit="Diamonds"] {
+    color: red;
+  }
 }
 
-x-card[open=false] {
+x-card[open="false"] {
   background: var(--card-back-pattern);
   background-color: var(--card-background-color);
   background-size: cover;
   background-repeat: repeat;
+
+  .card-content {
+    visibility: hidden;
+  }
+}
+
+/* hacky solution for drag and drop since elements cannot be hidden with display
+* and such when dragdropping...
+*
+* Source: https://stackoverflow.com/questions/36379184/html5-draggable-hide-original-element
+* */
+x-card.hide {
+  transition: 0.01s;
+  transform: translateX(-9999px);
 }

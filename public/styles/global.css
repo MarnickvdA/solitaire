@@ -1,3 +1,9 @@
 body {
-  background-color: var(--background-color);
+  background: var(--background-color);
+  background: var(--background);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+

@@ -1,4 +1,6 @@
 class CardStack extends HTMLElement {
+  static observedAttributes = ["overlap"];
+
   constructor() {
     super();
   }
@@ -10,13 +12,6 @@ class CardStack extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!document.querySelector('link[href*="card-stack.css"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = new URL("./card-stack.css", import.meta.url);
-      document.head.appendChild(link);
-    }
-
     this.addEventListener("dragover", (event) => {
       event.preventDefault(); // Allow drop
       event.dataTransfer.dropEffect = "move";
@@ -40,7 +35,15 @@ class CardStack extends HTMLElement {
       }
 
       if (card.parentElement !== this) {
+        const parent = card.parentElement;
+
+        // remove card from old stack
         card.remove();
+
+        // Open the card under the card that was removed
+        if (parent.lastElementChild) {
+          parent.lastElementChild.setAttribute("open", true);
+        }
       }
 
       this.appendChild(card);

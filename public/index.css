@@ -1,3 +1,7 @@
 @import url("./styles/reset.css");
 @import url("./styles/variables.css");
 @import url("./styles/global.css");
+
+@import url("./app/App.css");
+@import url("./components/card-stack/card-stack.css");
+@import url("./components/card/card.css");

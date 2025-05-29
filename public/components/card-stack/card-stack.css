@@ -5,7 +5,14 @@ x-card-stack {
   justify-content: center;
   align-items: center;
   border-radius: var(--card-border-radius);
-  border: 1px solid var(--border-color);
+  border: 5px solid rgba(255, 255, 255, 0.2);
   position: relative;
   overflow: visible;
+}
+
+x-card-stack[overlap] {
+  x-card {
+    top: calc(4px + min(calc(var(--i) * 10px), calc(13 * 10px)));
+    left: 4px;
+  }
 }

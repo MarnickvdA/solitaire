@@ -6,22 +6,25 @@ class Card extends HTMLElement {
   }
 
   connectedCallback() {
-    if (!document.querySelector('link[href*="card.css"]')) {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = new URL("./card.css", import.meta.url);
-      document.head.appendChild(link);
-    }
-
     this.setAttribute("draggable", "true");
+
     this.addEventListener("dragstart", (event) => {
       this.id ||= `card-${crypto.randomUUID()}`;
+      this.classList.add("hide");
       event.dataTransfer.setData("text/plain", this.id);
       event.dataTransfer.effectAllowed = "move";
       console.log("Dragging card...");
     });
 
+    this.addEventListener("dragend", () => {
+      this.classList.remove("hide");
+    })
+
     console.log("Playing card added to page.");
+
+    this.innerHTML = `
+        <p class="card-content">${this.getAttribute("rank")} of ${this.getAttribute("suit")}</p>
+      `;
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

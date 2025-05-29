@@ -10,5 +10,6 @@ packages!
 ## Development
 
 ```sh
-npx http-server ./public -o -p 8080 
+brew install mask
+mask serve
 ```

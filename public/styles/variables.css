@@ -5,7 +5,8 @@
     "DejaVu Sans Mono", monospace;
   --font-system-code-size: 0.8rem;
 
-  --background-color: rgba(230, 230, 230, 1);
+  --background-color: #619b2a;
+  --background: radial-gradient(circle, rgba(97, 155, 42, 1) 0%, rgba(65, 155, 42, 1) 100%);
 
   --text-color: black;
   --text-color-mute: hsl(0, 0%, 40%);
@@ -14,7 +15,7 @@
 
   --card-background-color: white;
   --card-border-radius: 8px;
-  --border-color: rgba(0, 0, 0, 0.25);
+  --border-color: black;
 
   --card-back-pattern: repeating-linear-gradient(
     135deg,
