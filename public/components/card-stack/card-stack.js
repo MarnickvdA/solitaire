@@ -1,4 +1,4 @@
-class CardStack extends HTMLElement {
+export class CardStack extends HTMLElement {
   static observedAttributes = ["overlap"];
 
   constructor() {
@@ -11,51 +11,61 @@ class CardStack extends HTMLElement {
     });
   }
 
-  connectedCallback() {
-    this.addEventListener("dragover", (event) => {
-      event.preventDefault(); // Allow drop
-      event.dataTransfer.dropEffect = "move";
-    });
+  /**
+   * calls when a card is dragged over this stack
+   * @param {DragEvent} event
+   */
+  onDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }
 
-    this.addEventListener("drop", (event) => {
-      event.preventDefault();
+  /**
+   * calls when a card is dropped in this stack
+   * @param {DragEvent} event
+   */
+  onDropCard(event) {
+    const app = document.querySelector("x-app");
+    if (!app || typeof app.canDropCard !== "function") {
+      return;
+    }
 
-      const cardId = event.dataTransfer.getData("text/plain");
+    if (!app.canDropCard(this, event)) {
+      console.warn("Cannot drop card in this stack");
+      return;
+    }
 
-      if (!cardId) {
-        console.warn("No card ID received in drop.");
-        return;
+    event.preventDefault();
+
+    const data = event.dataTransfer.getData("text/plain");
+    const { cardId } = JSON.parse(data);
+    const card = document.getElementById(cardId);
+    if (!card) {
+      console.warn(`No element found with ID "${cardId}"`);
+      return;
+    }
+
+    if (card.parentElement !== this) {
+      const parent = card.parentElement;
+
+      // remove card from old stack
+      card.remove();
+
+      // Open the card under the card that was removed
+      if (parent.lastElementChild) {
+        parent.lastElementChild.setAttribute("open", true);
       }
+    }
 
-      const card = document.getElementById(cardId);
-
-      if (!card) {
-        console.warn(`No element found with ID "${cardId}"`);
-        return;
-      }
-
-      if (card.parentElement !== this) {
-        const parent = card.parentElement;
-
-        // remove card from old stack
-        card.remove();
-
-        // Open the card under the card that was removed
-        if (parent.lastElementChild) {
-          parent.lastElementChild.setAttribute("open", true);
-        }
-      }
-
-      this.appendChild(card);
-      this.updateCardOffsets();
-    });
-
-    console.log("Card deck added to page.");
+    this.appendChild(card);
     this.updateCardOffsets();
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    console.log("attributeChangedCallback", name, oldValue, newValue);
+  connectedCallback() {
+    this.addEventListener("dragover", this.onDragOver);
+    this.addEventListener("drop", this.onDropCard);
+
+    this.updateCardOffsets();
   }
 }
 

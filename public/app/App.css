@@ -2,11 +2,30 @@ x-app {
   display: grid;
   margin: auto;
   padding: 32px;
-  grid-template-columns: repeat(7, 10rem);
-  grid-template-rows: repeat(2, 15rem);
+  grid-template-columns: repeat(7, 14rem);
+  grid-template-rows: repeat(2, 20rem);
   grid-template-areas:
     "SD SP .  AH AC AD AS"
     "S1 S2 S3 S4 S5 S6 S7";
   grid-column-gap: 24px;
-  grid-row-gap: 96px;
+  grid-row-gap: 128px;
+}
+
+.ace-deck {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+  span.suit-bg {
+    z-index: -1;
+    position: absolute;
+    color: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+    font-size: 8rem;
+    line-height: 5.5rem;
+  }
 }

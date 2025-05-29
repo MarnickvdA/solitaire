@@ -1,55 +1,10 @@
-/**
- * @typedef {({ suit: string; rank: string; order: number; })} Card
- */
-
-/**
- * @returns {Card[]} shuffled deck
- */
-function generateShuffledDeck() {
-  const suits = ["Hearts", "Clubs", "Diamonds", "Spades"];
-  const ranks = [
-    "Ace",
-    "King",
-    "Queen",
-    "Jack",
-    "10",
-    "9",
-    "8",
-    "7",
-    "6",
-    "5",
-    "4",
-    "3",
-    "2",
-  ];
-
-  let deck = [];
-  for (let j = 0; j < suits.length; j++) {
-    for (let i = 0; i < ranks.length; i++) {
-      deck = [
-        ...deck,
-        {
-          suit: suits[j],
-          rank: ranks[i],
-          order: i,
-        },
-      ];
-    }
-  }
-
-  for (var i = deck.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = deck[i];
-    deck[i] = deck[j];
-    deck[j] = temp;
-  }
-
-  return deck;
-}
+import { suits, ranks, generateShuffledDeck } from "../lib/deck-utils.js";
 
 class App extends HTMLElement {
   constructor() {
     super();
+
+    this.canDropCard = this.canDropCard.bind(this);
 
     this.deck = generateShuffledDeck();
   }
@@ -85,15 +40,109 @@ class App extends HTMLElement {
     }
   }
 
+  /**
+   * @param {HTMLElement} target drop target
+   * @param {DragEvent} event
+   * @returns {boolean} can drop card
+   */
+  canDropCard(target, event) {
+    const data = event.dataTransfer.getData("text/plain");
+
+    if (!data) {
+      console.warn("No data received.");
+      return false;
+    }
+
+    const { cardId, sourceId } = JSON.parse(data);
+
+    if (!cardId) {
+      console.warn("No card ID received in drop.");
+      return false;
+    }
+
+    if(target.id === sourceId) {
+      return true
+    }
+
+    if (target.id === "pile") {
+      if (sourceId !== "deck") {
+        console.warn("can only drop in pile from deck");
+        return false;
+      }
+
+      // we can skip the rest because we move card from deck to pile
+      return true;
+    }
+
+    const card = document.getElementById(cardId);
+    const rank = card.getAttribute("rank");
+    const suit = card.getAttribute("suit");
+
+    // Check for first ace in the ace decks
+    if (
+      suits.map((v) => v.toLowerCase()).includes(target.id) &&
+      target.children.length === 0
+    ) {
+      if (rank !== "Ace") {
+        console.warn("First element of ace deck must be an ace!");
+        return false;
+      }
+
+      if (target.id !== suit.toLowerCase()) {
+        console.warn(`Must be Ace of ${target.id}, got Ace of ${suit}`);
+        return false;
+      }
+    }
+
+    // for any non-ace stack, if the stack is empty, we can just drop the card.
+    if (target.children.length === 0) {
+      return true;
+    }
+
+    // check if the current card can be placed on the previous card
+    const topCard = target.lastElementChild;
+    const topCardSuit = topCard.getAttribute("suit");
+    const topCardRank = topCard.getAttribute("rank");
+
+    if (suit !== topCardSuit) {
+      console.warn(`Expected suit ${topCardSuit}, got: ${suit}`);
+      return false;
+    }
+
+    if (ranks.indexOf(rank) - 1 !== ranks.indexOf(topCardRank)) {
+      console.warn(
+        `Expected rank ${ranks[ranks.indexOf(topCardRank) + 1]}, got: ${rank}`,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   connectedCallback() {
     this.innerHTML = `
-        <x-card-stack id="deck" style="grid-area: SD;"></x-card-stack>
+        <x-deck-stack id="deck" style="grid-area: SD;"></x-deck-stack>
         <x-card-stack id="pile" style="grid-area: SP;"></x-card-stack>
 
-        <x-card-stack id="hearts" overlap style="grid-area: AH;"></x-card-stack>
-        <x-card-stack id="clubs" overlap style="grid-area: AC;"></x-card-stack>
-        <x-card-stack id="diamonds" overlap style="grid-area: AD;"></x-card-stack>
-        <x-card-stack id="spades" overlap style="grid-area: AS;"></x-card-stack>
+        <div class="ace-deck" style="grid-area: AH;">
+          <x-card-stack id="hearts" overlap></x-card-stack>
+          <span class="suit-bg">&#9829;</span>
+        </div>
+
+        <div class="ace-deck" style="grid-area: AC;">
+          <x-card-stack id="clubs" overlap></x-card-stack>
+          <span class="suit-bg">&#9827;</span>
+        </div>
+
+        <div class="ace-deck" style="grid-area: AD;">
+          <x-card-stack id="diamonds" overlap></x-card-stack>
+          <span class="suit-bg">&#9830;</span>
+        </div>
+
+        <div class="ace-deck" style="grid-area: AS;">
+          <x-card-stack id="spades" overlap></x-card-stack>
+          <span class="suit-bg">&#9824;</span>
+        </div>
 
         <x-card-stack id="stack1" overlap style="grid-area: S1;"></x-card-stack>
         <x-card-stack id="stack2" overlap style="grid-area: S2;"></x-card-stack>
