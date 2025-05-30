@@ -10,7 +10,7 @@ class DeckStack extends CardStack {
    * @param {DragEvent} event
    */
   onDragOver(event) {
-    super.onDragOver(event)
+    super.onDragOver(event);
   }
 
   /**
@@ -18,7 +18,27 @@ class DeckStack extends CardStack {
    * @param {DragEvent} event
    */
   onDropCard(event) {
-    console.warn('cannot drop back to the deck.')
+    console.warn("cannot drop back to the deck.");
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+
+    this.addEventListener("click", () => {
+      if (!this.hasChildNodes()) {
+        console.log("moving pile back to deck");
+        const pile = document.getElementById(`pile`);
+
+        while (pile.hasChildNodes()) {
+          const card = document.getElementById(pile.lastChild.id);
+          card.setAttribute("open", pile.children.length === 1);
+          card.remove();
+          this.appendChild(card);
+        }
+
+        this.updateCardOffsets();
+      }
+    });
   }
 }
 

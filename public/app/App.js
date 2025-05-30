@@ -38,6 +38,15 @@ class App extends HTMLElement {
       const card = this.deck.pop();
       this.addCardToStack(deckStack, card, this.deck.length == 0);
     }
+
+    document.getElementById("retry-pile").addEventListener("click", () => {
+      const deck = document.getElementById(`deck`);
+      const pile = document.getElementById(`pile`);
+
+      while (pile.hasChildNodes()) {
+        deck.appendChild(pile.lastChild);
+      }
+    });
   }
 
   /**
@@ -117,27 +126,31 @@ class App extends HTMLElement {
 
   connectedCallback() {
     this.innerHTML = `
-        <x-deck-stack id="deck" style="grid-area: SD;"></x-deck-stack>
+        <div class="deck-container">
+          <span id="retry-pile" class="bg-text">&circlearrowright;</span>
+          <x-deck-stack id="deck" style="grid-area: SD;"></x-deck-stack>
+        </div>
+
         <x-card-stack id="pile" style="grid-area: SP;"></x-card-stack>
 
-        <div class="ace-deck" style="grid-area: AH;">
+        <div class="deck-container" style="grid-area: AH;">
           <x-card-stack id="hearts" overlap></x-card-stack>
-          <span class="suit-bg">&#9829;</span>
+          <span class="bg-text">&#9829;</span>
         </div>
 
-        <div class="ace-deck" style="grid-area: AC;">
+        <div class="deck-container" style="grid-area: AC;">
           <x-card-stack id="clubs" overlap></x-card-stack>
-          <span class="suit-bg">&#9827;</span>
+          <span class="bg-text">&#9827;</span>
         </div>
 
-        <div class="ace-deck" style="grid-area: AD;">
+        <div class="deck-container" style="grid-area: AD;">
           <x-card-stack id="diamonds" overlap></x-card-stack>
-          <span class="suit-bg">&#9830;</span>
+          <span class="bg-text">&#9830;</span>
         </div>
 
-        <div class="ace-deck" style="grid-area: AS;">
+        <div class="deck-container" style="grid-area: AS;">
           <x-card-stack id="spades" overlap></x-card-stack>
-          <span class="suit-bg">&#9824;</span>
+          <span class="bg-text">&#9824;</span>
         </div>
 
         <x-card-stack id="stack1" overlap style="grid-area: S1;"></x-card-stack>
