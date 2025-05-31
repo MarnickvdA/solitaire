@@ -1,4 +1,6 @@
-x-deck-stack,
+x-stockpile,
+x-foundation-pile,
+x-tableau-column,
 x-card-stack {
   width: 100%;
   height: 100%;
@@ -11,11 +13,9 @@ x-card-stack {
   overflow: visible;
 }
 
-x-deck-stack[overlap],
-x-card-stack[overlap] {
+x-tableau-column {
   x-card {
-    top: calc(4px + min(calc(var(--i) * 10px), calc(13 * 10px)));
+    top: calc(var(--i) * 32px);
     left: 4px;
   }
 }
-

@@ -1,11 +1,15 @@
 import { registerApp } from "./app/App.js";
 import { registerCardStackComponent } from "./components/card-stack/card-stack.js";
-import { registerDeckStackComponent } from "./components/card-stack/deck-stack.js";
+import { registerFoundationPileComponent } from "./components/card-stack/foundation-pile.js";
+import { registerStockpileComponent } from "./components/card-stack/stockpile.js";
+import { registerTableauColumnComponent } from "./components/card-stack/tableau-column.js";
 import { registerCardComponent } from "./components/card/card.js";
 
 const app = () => {
   registerCardStackComponent();
-  registerDeckStackComponent();
+  registerStockpileComponent();
+  registerFoundationPileComponent();
+  registerTableauColumnComponent();
   registerCardComponent();
   registerApp();
 

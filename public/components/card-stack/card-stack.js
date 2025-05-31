@@ -12,6 +12,39 @@ export class CardStack extends HTMLElement {
   }
 
   /**
+   * @param {HTMLElement} target drop target
+   * @param {DragEvent} event
+   * @returns {boolean} can drop card
+   */
+  canDropCard(target, event) {
+    const data = event.dataTransfer.getData("text/plain");
+
+    if (!data) {
+      console.warn("No data received.");
+      return false;
+    }
+
+    const { cardId, sourceId } = JSON.parse(data);
+
+    if (!cardId) {
+      console.warn("No card ID received in drop.");
+      return false;
+    }
+
+    if (target.id === "pile") {
+      if (sourceId !== "deck") {
+        console.warn("can only drop in pile from deck");
+        return false;
+      }
+
+      // we can skip the rest because we move card from deck to pile
+      return true;
+    }
+
+    return true;
+  }
+
+  /**
    * calls when a card is dragged over this stack
    * @param {DragEvent} event
    */
@@ -25,13 +58,7 @@ export class CardStack extends HTMLElement {
    * @param {DragEvent} event
    */
   onDropCard(event) {
-    const app = document.querySelector("x-app");
-    if (!app || typeof app.canDropCard !== "function") {
-      return;
-    }
-
-    if (!app.canDropCard(this, event)) {
-      console.warn("Cannot drop card in this stack");
+    if (!this.canDropCard(this, event)) {
       return;
     }
 
@@ -48,8 +75,26 @@ export class CardStack extends HTMLElement {
     if (card.parentElement !== this) {
       const parent = card.parentElement;
 
-      // remove card from old stack
-      card.remove();
+      if (
+        card.parentElement.id.startsWith("stack") &&
+        this.id.startsWith("stack")
+      ) {
+        let current = card;
+        const selected = [];
+
+        while (current) {
+          selected.push(current);
+          current = current.nextElementSibling;
+        }
+
+        for (let i = 0; i < selected.length; i++) {
+          selected[i].remove();
+          this.appendChild(selected[i]);
+        }
+      } else {
+        card.remove();
+        this.appendChild(card);
+      }
 
       // Open the card under the card that was removed
       if (parent.lastElementChild) {
@@ -57,7 +102,6 @@ export class CardStack extends HTMLElement {
       }
     }
 
-    this.appendChild(card);
     this.updateCardOffsets();
   }
 

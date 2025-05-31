@@ -15,8 +15,8 @@ x-card {
     position: relative;
 
     .card-suit {
-      font-size: 1.5rem;
-      line-height: 1.5rem;
+      font-size: 1rem;
+      line-height: 1rem;
     }
 
     .card-rank {
@@ -25,10 +25,11 @@ x-card {
     }
 
     .card-info {
-      padding: 8px;
+      padding: 4px 8px;
       display: flex;
-      flex-direction: column;
-      text-align: center;
+      column-gap: 4px;
+      flex-direction: row;
+      text-align: top;
     }
 
     .card-header {

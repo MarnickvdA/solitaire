@@ -8,8 +8,7 @@ x-app {
     "SD SP .  AH AC AD AS"
     "S1 S2 S3 S4 S5 S6 S7";
   grid-column-gap: max(24px, 2dvw);
-  grid-row-gap: max(128px, 10dvw);
-
+  grid-row-gap: max(32px, 3dvw);
   font-size: max(16px, 1.25dvw);
 }
 
@@ -20,7 +19,6 @@ x-app {
   display: flex;
   justify-content: center;
   align-items: center;
-
 
   span.bg-text {
     z-index: -1;
